@@ -137,7 +137,9 @@ namespace FluentMigrator.Runner.Generators.Postgres
                 else
                     result.Append(",");
 
-                result.Append("\"" + column.Name + "\"");
+
+                result.Append(column.Name);
+                //result.Append("\"" + column.Name + "\"");
                 result.Append(column.Direction == Direction.Ascending ? " ASC" : " DESC");
             }
             result.Append(");");

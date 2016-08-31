@@ -121,7 +121,7 @@ namespace FluentMigrator.Runner
         {
             get
             {
-                return Processor.TableExists(VersionTableMetaData.SchemaName, VersionTableMetaData.TableName);
+                return Processor.TableExists(VersionTableMetaData.SchemaName.ToLower(), VersionTableMetaData.TableName.ToLower());
             }
         }
 

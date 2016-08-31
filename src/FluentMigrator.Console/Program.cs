@@ -34,4 +34,4 @@ namespace FluentMigrator.Console
             }
         }
     }
-}
+} 

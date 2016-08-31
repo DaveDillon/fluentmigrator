@@ -7,12 +7,7 @@ namespace FluentMigrator.Runner.Generators.Postgres
     {
         public override string FormatBool(bool value) { return value ? "true" : "false"; }
 
-        public override string QuoteSchemaName(string schemaName)
-        {
-            if (string.IsNullOrEmpty(schemaName))
-                schemaName = "public";
-            return base.QuoteSchemaName(schemaName);
-        }
+     
 
         protected override string FormatByteArray(byte[] array)
         {
@@ -25,7 +20,33 @@ namespace FluentMigrator.Runner.Generators.Postgres
             if (string.IsNullOrEmpty(quoted))
                 return "public";
 
-            return UnQuote(quoted);
+            return UnQuote(quoted).ToLower();
         }
+
+
+        public override string QuoteTableName(string tableName)
+        {
+            return tableName.ToLower();
+        }
+
+        public override string QuoteColumnName(string columnName)
+        {
+            return columnName.ToLower(); ;
+        }
+
+
+        public override string QuoteSchemaName(string schemaName)
+        {
+            if (string.IsNullOrEmpty(schemaName))
+                schemaName = "public";
+            return schemaName.ToLower();
+        }
+
+        public override string QuoteIndexName(string indexName)
+        {
+            return indexName.ToLower();
+        }
+
+
     }
 }
