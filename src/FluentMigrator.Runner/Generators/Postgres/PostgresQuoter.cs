@@ -1,13 +1,19 @@
 using System.Linq;
 using FluentMigrator.Runner.Generators.Generic;
+using FluentMigrator.Runner.Helpers;
 
 namespace FluentMigrator.Runner.Generators.Postgres
 {
     public class PostgresQuoter : GenericQuoter
     {
         public override string FormatBool(bool value) { return value ? "true" : "false"; }
+        private  bool NoQuotes { get; } = false;
 
-     
+        public PostgresQuoter(bool _NoQuotes = false)
+        {
+            NoQuotes = _NoQuotes;
+        }
+        
 
         protected override string FormatByteArray(byte[] array)
         {
@@ -20,18 +26,18 @@ namespace FluentMigrator.Runner.Generators.Postgres
             if (string.IsNullOrEmpty(quoted))
                 return "public";
 
-            return UnQuote(quoted).ToLower();
+            return UnQuote(quoted).ToLowerForPostgresSQL(NoQuotes);
         }
 
 
         public override string QuoteTableName(string tableName)
         {
-            return tableName.ToLower();
+            return tableName.ToLowerForPostgresSQL(NoQuotes);
         }
 
         public override string QuoteColumnName(string columnName)
         {
-            return columnName.ToLower(); ;
+            return columnName.ToLowerForPostgresSQL(NoQuotes);
         }
 
 
@@ -39,12 +45,12 @@ namespace FluentMigrator.Runner.Generators.Postgres
         {
             if (string.IsNullOrEmpty(schemaName))
                 schemaName = "public";
-            return schemaName.ToLower();
+            return schemaName.ToLowerForPostgresSQL(NoQuotes);
         }
 
         public override string QuoteIndexName(string indexName)
         {
-            return indexName.ToLower();
+            return indexName.ToLowerForPostgresSQL(NoQuotes);
         }
 
 

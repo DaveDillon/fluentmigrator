@@ -9,7 +9,7 @@ namespace FluentMigrator.Runner.Processors.Postgres
 {
     public class PostgresProcessor : GenericProcessorBase
     {
-        readonly PostgresQuoter quoter = new PostgresQuoter();
+        readonly PostgresQuoter quoter = new PostgresQuoter(NoQuotes);
 
         public override string DatabaseType
         {
@@ -24,9 +24,21 @@ namespace FluentMigrator.Runner.Processors.Postgres
             }
         }
 
+        /// <summary>
+        /// Don't use quotes on Postgres database objects.
+        /// Also makes all objects lowercase.
+        /// </summary>
+        public static bool NoQuotes
+        {
+            get;
+            set;
+        }
+
+
         public PostgresProcessor(IDbConnection connection, IMigrationGenerator generator, IAnnouncer announcer, IMigrationProcessorOptions options, IDbFactory factory)
             : base(connection, factory, generator, announcer, options)
         {
+            NoQuotes = true;
         }
 
         public override void Execute(string template, params object[] args)
@@ -143,13 +155,22 @@ namespace FluentMigrator.Runner.Processors.Postgres
         }
 
         private string FormatToSafeSchemaName(string schemaName)
-        {
-            return FormatHelper.FormatSqlEscape(quoter.UnQuoteSchemaName(schemaName));
+        {   
+
+            return FormatHelper
+                .FormatSqlEscape(quoter.UnQuoteSchemaName(schemaName))
+                .ToLowerForPostgresSQL(NoQuotes);
         }
 
         private string FormatToSafeName(string sqlName)
         {
-            return FormatHelper.FormatSqlEscape(quoter.UnQuote(sqlName));
+            return FormatHelper
+                .FormatSqlEscape(quoter.UnQuote(sqlName))
+                .ToLowerForPostgresSQL(NoQuotes);
         }
+
+
+       
+
     }
 }

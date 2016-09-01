@@ -255,6 +255,7 @@
     <Compile Include="Processors\Oracle\OracleProcessor.cs" />
     <Compile Include="Processors\Oracle\OracleProcessorFactory.cs" />
     <Compile Include="Processors\Postgres\PostgresDbFactory.cs" />
+    <Compile Include="Helpers\PostgresExtensions.cs" />
     <Compile Include="Processors\Postgres\PostgresProcessor.cs" />
     <Compile Include="Processors\Postgres\PostgresProcessorFactory.cs" />
     <Compile Include="Processors\ProcessorOptions.cs" />
